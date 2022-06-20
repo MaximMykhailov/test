@@ -1,0 +1,13 @@
+<ul class="hotels-list">
+  <li *ngFor="let hotel of hotels">
+    <img src="assets/images/placeholder.png" alt="chairs">
+    <div class="info-block">
+      <div class="city">{{ hotel.address.city }}</div>
+      <div class="title">{{ hotel.title }}</div>
+      <div class="distance">{{ hotel.distance }} km from city center</div>
+      <div class="price">$96</div>
+      <div class="note">Designs may vary</div>
+    </div>
+    <button class="book-btn">Book</button>
+  </li>
+</ul>

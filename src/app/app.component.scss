@@ -1,0 +1,15 @@
+
+.body-container {
+  width: 100%;
+  height: calc(100% - 62px);
+  overflow: hidden;
+  position: relative;
+}
+
+.list-wrapper {
+  height: 215px;
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+}
