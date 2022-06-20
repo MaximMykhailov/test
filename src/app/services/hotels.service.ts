@@ -12,7 +12,7 @@ export class HotelsService {
 
   public getHotels(): Observable<IHotel[]> {
     return this.http
-      .get<{ items: IHotel[] }>('assets/static/hotels.json')
+      .get<{ items: IHotel[] }>('/assets/static/hotels.json')
       .pipe(map((response) => response.items));
   }
 }
