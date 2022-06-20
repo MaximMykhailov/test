@@ -1,4 +1,5 @@
 export interface IHotel {
+  id?: number;
   title: string;
   address: {
     label: string;
@@ -19,4 +20,5 @@ export interface IHotel {
     lng: number;
   };
   distance: number;
+  active?: boolean;
 }

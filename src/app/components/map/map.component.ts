@@ -1,25 +1,21 @@
-
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
+  Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 
-import { ICoords } from 'src/app/models/coords.model';
+import { IHotel } from 'src/app/models/hotel.model';
 import { environment } from 'src/environments/environment';
 
 declare let H: any;
-
-const BERLIN_COORDS: ICoords = {
-  lat: 51.620008,
-  lng: 13.404954,
-} as const;
-
 
 @Component({
   selector: 'app-map',
@@ -28,7 +24,10 @@ const BERLIN_COORDS: ICoords = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements OnChanges, AfterViewInit {
-  @Input() mapMarkerCoords!: ICoords[];
+  @Input() hotels!: IHotel[];
+  @Input() center!: { lat: number, lng: number };
+
+  @Output() markerClick: EventEmitter<IHotel> = new EventEmitter();
 
   @ViewChild('map')
   public mapElement!: ElementRef;
@@ -44,32 +43,48 @@ export class MapComponent implements OnChanges, AfterViewInit {
 
   public ngOnInit(): void {}
 
-  ngOnChanges(): void {
-    if (this.map && this.mapMarkerCoords) {
-      this.addMarkersAndSetViewBounds(this.mapMarkerCoords);
+  ngOnChanges(simpleChanges: SimpleChanges): void {
+    if (this.map && this.hotels) {
+      this.addMarkersAndSetViewBounds(this.hotels);
+    }
+
+    if (this.map && simpleChanges.center) {
+      this.map.setCenter(this.center)
     }
   }
 
-  private addMarkersAndSetViewBounds(coords: ICoords[]) {
+  private addMarkersAndSetViewBounds(hotels: IHotel[]) {
+    this.map.removeObjects(this.map.getObjects());
     const group = new H.map.Group();
     const markers: any[] = [];
 
-    coords.forEach((coord: ICoords) =>
-      markers.push(
-        new H.map.Marker({ lat: coord.lat, lng: coord.lng }, { icon: new H.map.Icon(`assets/icons/${ coord.active ? 'home-icon-active' : 'home-icon'}.svg`) })
-      )
-    );
+    hotels.forEach((hotel: IHotel) => {
+      const { position } = hotel;
+
+      const marker = new H.map.Marker(position, {
+        icon: new H.map.Icon(
+          `assets/icons/${hotel.active ? 'home-icon-active' : 'home-icon'}.svg`
+        ),
+      });
+      marker.setData(hotel);
+      marker.addEventListener('pointerdown', this.onMarkerClick.bind(this));
+      markers.push(marker);
+    });
 
     group.addObjects(markers);
     this.map.addObject(group);
+  }
 
-    this.map.getViewModel().setLookAtData({
-      bounds: group.getBoundingBox(),
-    });
+  private onMarkerClick(event: any): void {
+    const { data } = event.target;
+    
+    this.markerClick.emit(data);
   }
 
   public ngAfterViewInit(): void {
-    this.initMap();
+    if (!this.map) {
+      this.initMap();
+    }
   }
 
   private initMap(): void {
@@ -82,8 +97,8 @@ export class MapComponent implements OnChanges, AfterViewInit {
       this.mapElement.nativeElement,
       defaultLayers.vector.normal.map,
       {
-        center: BERLIN_COORDS,
-        zoom: 7,
+        center: this.center,
+        zoom: 15,
       }
     );
 

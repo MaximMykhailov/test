@@ -1,5 +1,5 @@
-<ul class="hotels-list">
-  <li *ngFor="let hotel of hotels">
+<ul class="hotels-list" (scroll)="onScroll()" #hotelsList>
+  <li *ngFor="let hotel of hotels; trackBy:hotelId" id="hotelCard-{{hotel.id}}">
     <img src="assets/images/placeholder.png" alt="chairs">
     <div class="info-block">
       <div class="city">{{ hotel.address.city }}</div>
@@ -8,6 +8,6 @@
       <div class="price">$96</div>
       <div class="note">Designs may vary</div>
     </div>
-    <button class="book-btn">Book</button>
+    <button class="book-btn" (click)="onBook(hotel)">Book</button>
   </li>
 </ul>

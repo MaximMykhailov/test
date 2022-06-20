@@ -1,0 +1,34 @@
+@import 'src/styles/mixins';
+
+h1 {
+  font-size: 20px;
+}
+
+form {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr) ;
+  gap: 15px;
+  min-width: none;
+  
+  .input-wrapper {
+    display: grid;
+    grid-row: 10px 1fr;
+    gap: 5px;
+
+    label {
+      font-size: 11px;
+      color: #91999e;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    input {
+      padding: 8px;
+    }
+  }
+
+  button {
+    // grid-column: 1 / 3;
+    @include btn-primary;
+  }
+}

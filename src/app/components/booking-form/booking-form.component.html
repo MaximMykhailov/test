@@ -1,0 +1,31 @@
+<div>
+  <h1>Booking {{ hotel.title }}</h1>
+  <form [formGroup]="form" (ngSubmit)="openConfirmationModal()">
+    <div class="input-wrapper">
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name" />
+    </div>
+
+    <div class="input-wrapper">
+      <label for="lastname">Lastname</label>
+      <input id="lastname" type="text" formControlName="lastname" />
+    </div>
+
+    <div class="input-wrapper">
+      <label for="arrival">Arrival</label>
+      <input id="arrival" type="date" formControlName="arrivalDate" />
+    </div>
+
+    <div class="input-wrapper">
+      <label for="departure">Departure</label>
+      <input id="departure" type="date" formControlName="departureDate" />
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<app-confirmation-modal
+  *ngIf="showConfirmation"
+  (confirm)="confirm()"
+  (cancel)="closeConfirmationModal()"
+></app-confirmation-modal>

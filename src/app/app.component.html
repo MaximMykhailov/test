@@ -1,7 +1,18 @@
 <app-header></app-header>
 <div class="body-container">
-  <app-map [mapMarkerCoords]="coords"></app-map>
+  <app-map
+    [hotels]="hotels"
+    [center]="activeHotelPosition"
+    (markerClick)="onMarkerClick($event)"
+  ></app-map>
   <div class="list-wrapper">
-    <app-hotels-list [hotels]="hotels"></app-hotels-list>
+    <app-hotels-list
+      [hotels]="hotels"
+      (activeHotelChange)="setHotelActive($event)"
+      (bookHotel)="onBookHotel($event)"
+    ></app-hotels-list>
   </div>
 </div>
+<app-modal *ngIf="showModal" (closeModal)="closeModal()">
+  <app-booking-form [hotel]="hotelToBook" (closeModal)="closeModal()"></app-booking-form>
+</app-modal>

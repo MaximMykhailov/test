@@ -1,0 +1,20 @@
+.backdrop {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba($color: #000000, $alpha: 0.6);
+}
+
+.card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
